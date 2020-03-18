@@ -16,6 +16,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.NumberFormat;
 
 import com.vhsadev.springmvc.models.enums.StatusTitulo;
 
@@ -65,6 +66,7 @@ public class Titulo {
 		this.dataVencimento = dataVencimento;
 	}
 
+	@NumberFormat(pattern = "#,##0.00")
 	public BigDecimal getValor() {
 		return valor;
 	}
