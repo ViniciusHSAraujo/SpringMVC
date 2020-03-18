@@ -1,7 +1,7 @@
 package com.vhsadev.springmvc.models;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -11,6 +11,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.vhsadev.springmvc.models.enums.StatusTitulo;
 
@@ -21,13 +26,18 @@ public class Titulo {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long codigo;
 	
+	@NotEmpty(message = "O campo DESCRIÇÃO é requerido.")
 	private String descricao;
 	
+	@NotNull(message = "O campo DATA DE VENCIMENTO é requerido.")
 	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date dataVencimento;
 	
+	@Min(value = 0, message = "O campo DESCRIÇÃO é requerido.")
 	private BigDecimal valor;
 	
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	private StatusTitulo status;
 
