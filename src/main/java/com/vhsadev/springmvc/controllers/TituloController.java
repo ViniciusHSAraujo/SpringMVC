@@ -29,7 +29,6 @@ public class TituloController {
 	public ModelAndView pesquisa() {
 		
 		List<Titulo> titulos = tituloRepository.findAll();
-		
 		ModelAndView vm = new ModelAndView("PesquisaTitulos");
 		vm.addObject("titulos", titulos);
 		return vm;
