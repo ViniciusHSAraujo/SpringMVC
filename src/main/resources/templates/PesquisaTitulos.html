@@ -12,31 +12,23 @@
 
 	<div class="panel panel-default">
 		<div class="panel-heading">
-			<h1 class="panel-title">Pesquisa de títulos</h1>
+			<h1 class="panel-title">
+				Pesquisa de títulos <a class="btn btn-link aw-link-panel"
+					href="/titulos/novo">Cadastrar um novo título</a>
+			</h1>
+
 		</div>
 
 		<div class="panel-body">
 
-			<div class="alert alert-success alert-dismissible" role="alert"
-				th:if="${!#strings.isEmpty(MSG_Sucesso)}" th:text="${MSG_Sucesso}">
-				<button type="button" class="close" data-dismiss="alert"
-					aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
+			<div layout:insert="MensagensDeSucesso"></div>
 
-			<div class="alert alert-success alert-dismissible" role="alert"
-				th:if="${!#strings.isEmpty(MSG_Erro)}" th:text="${MSG_Erro}">
-				<button type="button" class="close" data-dismiss="alert"
-					aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
 
 			<table class="table table-bordered table-striped ">
 				<thead>
 					<tr>
 						<th class="text-center col-md-1">#</th>
+						<th class="text-center col-md-1">Descrição</th>
 						<th class="text-center col-md-2">Data de Vencimento</th>
 						<th class="text-center col-md-2">Valor</th>
 						<th class="text-center col-md-2">Status</th>
@@ -48,9 +40,29 @@
 						th:each="titulo : ${titulos}">
 						<td class="text-center" th:text="${titulo.codigo}"></td>
 						<td th:text="${titulo.descricao}"></td>
-						<td class="text-center" th:text="${{titulo.dataVencimento}}"></td>
+						<td class="text-center"
+							th:text="${#dates.format(titulo.dataVencimento, 'dd/MM/yyyy')}"></td>
 						<td class="text-center" th:text="|R$ ${{ titulo.valor}}|"></td>
-						<td class="text-center" th:text="${titulo.status}"></td>
+						<td class="text-center"><span class="label"
+							th:text="${titulo.status}"
+							th:classappend="${titulo.Pendente ? 'label-danger' : 'label-success'}"></span>
+						</td>
+						<td class="text-center"><a class="btn btn-link btn-xs"
+							th:href="@{/titulos/{codigo}(codigo=${titulo.codigo})}"
+							title="Editar" rel="tooltip" data-placement="top"
+							> <span
+								class="glyphicon glyphicon-pencil"></span>
+						</a>
+
+							<form method="post"
+								th:action="@{/titulos/excluir/{codigo}(codigo=${titulo.codigo})}"
+								style="display: inline">
+								<input type="hidden" name="codigo" id="codigo" th:value="${titulo.codigo}"
+									class="form-control" /> 
+									<button type="submit"
+									class="btn btn-link btn-xs glyphicon glyphicon-remove operacao-de-risco" title="Editar" rel="tooltip" data-placement="top"></button>
+							</form>
+							</td>
 					</tr>
 					<tr th:if="${#lists.isEmpty(titulos)}">
 						<td colspan="6">Nenhum título foi encontrado</td>

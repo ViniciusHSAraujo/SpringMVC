@@ -1,6 +1,7 @@
 package com.vhsadev.springmvc.models;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -11,7 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -35,7 +36,8 @@ public class Titulo {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date dataVencimento;
 	
-	@Min(value = 0, message = "O campo DESCRIÇÃO é requerido.")
+	@NotNull(message = "O campo VALOR é requerido.")
+	@DecimalMin(value = "0.01", message = "O valor deve ser maior que 0.01.")
 	private BigDecimal valor;
 	
 	@NotNull
@@ -66,7 +68,7 @@ public class Titulo {
 		this.dataVencimento = dataVencimento;
 	}
 
-	@NumberFormat(pattern = "#,##0.00")
+	@NumberFormat(pattern = "##0.00")
 	public BigDecimal getValor() {
 		return valor;
 	}
@@ -81,5 +83,14 @@ public class Titulo {
 
 	public void setStatus(StatusTitulo status) {
 		this.status = status;
+	}
+	
+	public boolean isPendente() {
+		return StatusTitulo.PENDENTE.equals(this.status);
+	}
+	
+	public String getDataVencimentoFormatada() {
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		return format.format(this.dataVencimento);
 	}
 }
