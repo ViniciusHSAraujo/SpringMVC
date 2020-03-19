@@ -1,6 +1,7 @@
 package com.vhsadev.springmvc.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -123,7 +124,37 @@ public class TituloController {
 		} catch (Exception e) {
 			attributes.addFlashAttribute("MSG_Erro", "Impossível excluir esse título!");
 		}
-		
+
+		return vm;
+
+	}
+
+	/**
+	 * Recebe um Id (via POST) e exclui no banco de dados.
+	 * 
+	 * @param titulo
+	 */
+	@RequestMapping(value = "/receber/{codigo}", method = RequestMethod.POST)
+	public ModelAndView recebimento(@PathVariable long codigo, RedirectAttributes attributes) {
+
+		ModelAndView vm = new ModelAndView("redirect:/titulos/");
+
+		Optional<Titulo> tituloBusca = tituloRepository.findById(codigo);
+		if (!tituloBusca.isPresent()) {
+			attributes.addFlashAttribute("MSG_Erro", "Título não encontrado!");
+			return vm;
+		}
+
+		Titulo titulo = tituloBusca.get();
+		if (titulo.isPendente()) {
+			titulo.setStatus(StatusTitulo.RECEBIDO);
+			tituloRepository.save(titulo);
+			
+			attributes.addFlashAttribute("MSG_Sucesso", "Título marcado como recebido com sucesso!");
+		} else {
+			attributes.addFlashAttribute("MSG_Erro", "Esse título já havia sido recebido anteriormente!");
+		}
+
 		return vm;
 
 	}

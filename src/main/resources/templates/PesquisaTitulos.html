@@ -22,6 +22,7 @@
 		<div class="panel-body">
 
 			<div layout:insert="MensagensDeSucesso"></div>
+			<div layout:insert="MensagensDeErroGerais"></div>
 
 
 			<table class="table table-bordered table-striped ">
@@ -60,7 +61,16 @@
 								<input type="hidden" name="codigo" id="codigo" th:value="${titulo.codigo}"
 									class="form-control" /> 
 									<button type="submit"
-									class="btn btn-link btn-xs glyphicon glyphicon-remove operacao-de-risco" title="Editar" rel="tooltip" data-placement="top"></button>
+									class="btn btn-link btn-xs glyphicon glyphicon-remove operacao-de-risco" title="Excluir" rel="tooltip" data-placement="top"></button>
+							</form>
+							
+							<form method="post"
+								th:action="@{/titulos/receber/{codigo}(codigo=${titulo.codigo})}"
+								style="display: inline">
+								<input type="hidden" name="codigo" id="codigo" th:value="${titulo.codigo}"
+									class="form-control" /> 
+									<button type="submit"
+									class="btn btn-link btn-xs glyphicon glyphicon-check operacao-de-risco" title="Receber" rel="tooltip" data-placement="top"></button>
 							</form>
 							</td>
 					</tr>
