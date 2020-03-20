@@ -10,6 +10,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -31,9 +32,13 @@ public class TituloController {
 	 * Renderiza a tela de pesquisa de títulos.
 	 */
 	@RequestMapping("")
-	public ModelAndView pesquisa() {
-
-		List<Titulo> titulos = tituloRepository.findAll();
+	public ModelAndView pesquisa(@RequestParam(required = false) String busca) {
+		List<Titulo> titulos;
+		if (busca == null) {
+			titulos = tituloRepository.findAll();
+		} else {
+			titulos = tituloRepository.findByDescricaoContaining(busca);
+		}
 		ModelAndView vm = new ModelAndView("PesquisaTitulos");
 		vm.addObject("titulos", titulos);
 		return vm;
@@ -149,7 +154,7 @@ public class TituloController {
 		if (titulo.isPendente()) {
 			titulo.setStatus(StatusTitulo.RECEBIDO);
 			tituloRepository.save(titulo);
-			
+
 			attributes.addFlashAttribute("MSG_Sucesso", "Título marcado como recebido com sucesso!");
 		} else {
 			attributes.addFlashAttribute("MSG_Erro", "Esse título já havia sido recebido anteriormente!");

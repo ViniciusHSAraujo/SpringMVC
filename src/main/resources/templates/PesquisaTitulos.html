@@ -21,6 +21,21 @@
 
 		<div class="panel-body">
 
+			<form method="GET" class="form-horizontal">
+				<div class="form-group">
+					<div class="col-sm-4">
+						<div class="input-group">
+							<input class="form-control" placeholder="Qual título você está procurando?" autofocus="autofocus" name="busca"></input> 
+							<span class="input-group-btn">
+								<button class="btn btn-default">
+									<i class="glyphicon glyphicon-search"></i>
+								</button>
+							</span>
+						</div>
+					</div>
+				</div>
+			</form>
+
 			<div layout:insert="MensagensDeSucesso"></div>
 			<div layout:insert="MensagensDeErroGerais"></div>
 
@@ -50,30 +65,29 @@
 						</td>
 						<td class="text-center"><a class="btn btn-link btn-xs"
 							th:href="@{/titulos/{codigo}(codigo=${titulo.codigo})}"
-							title="Editar" rel="tooltip" data-placement="top"
-							> <span
+							title="Editar" rel="tooltip" data-placement="top"> <span
 								class="glyphicon glyphicon-pencil"></span>
 						</a>
 
 							<form method="post"
 								th:action="@{/titulos/excluir/{codigo}(codigo=${titulo.codigo})}"
 								style="display: inline">
-								<input type="hidden" name="codigo" id="codigo" th:value="${titulo.codigo}"
-									class="form-control" /> 
-									<button type="submit"
-									class="btn btn-link btn-xs glyphicon glyphicon-remove operacao-de-risco" title="Excluir" rel="tooltip" data-placement="top"></button>
+								<input type="hidden" name="codigo" id="codigo"
+									th:value="${titulo.codigo}" class="form-control" />
+								<button type="submit"
+									class="btn btn-link btn-xs glyphicon glyphicon-remove operacao-de-risco"
+									title="Excluir" rel="tooltip" data-placement="top"></button>
 							</form>
-							
-							<form method="post"
-								th:if="${titulo.Pendente}"
+
+							<form method="post" th:if="${titulo.Pendente}"
 								th:action="@{/titulos/receber/{codigo}(codigo=${titulo.codigo})}"
 								style="display: inline">
-								<input type="hidden" name="codigo" id="codigo" th:value="${titulo.codigo}"
-									class="form-control" /> 
-									<button type="submit"
-									class="btn btn-link btn-xs glyphicon glyphicon-check operacao-de-risco" title="Receber" rel="tooltip" data-placement="top"></button>
-							</form>
-							</td>
+								<input type="hidden" name="codigo" id="codigo"
+									th:value="${titulo.codigo}" class="form-control" />
+								<button type="submit"
+									class="btn btn-link btn-xs glyphicon glyphicon-check operacao-de-risco"
+									title="Receber" rel="tooltip" data-placement="top"></button>
+							</form></td>
 					</tr>
 					<tr th:if="${#lists.isEmpty(titulos)}">
 						<td colspan="6">Nenhum título foi encontrado</td>
